@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head'); %>
+</head>
+<body class="container stimulus-demo-page">
+
+<main>
+  <h1>Html Page Demo</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Description</th>
+        <th>Demo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% components.forEach(function(component) { %>
+        <tr>
+          <td><%= component.title %></td>
+          <td><%= component.description %></td>
+          <td><a href="demo/<%= component.name %>">View Demo</a></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</main>
+
+<footer>
+  Spark Xuan
+</footer>
+
+</body>
+</html>

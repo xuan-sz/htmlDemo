@@ -1,0 +1,66 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>Button Example</title>  
+<style>
+/* styles.css */  
+.button-container {  
+    display: flex;  
+    flex-wrap: wrap; /* 允许按钮换行 */  
+    overflow: hidden; /* 隐藏超出容器的部分 */  
+    border: 1px solid #ccc;  
+    padding: 10px;  
+}  
+  
+.button-container button {  
+    margin-right: 10px;  
+    margin-bottom: 10px;  
+}  
+  
+.hidden {  
+    display: none; /* 用于隐藏按钮的类 */  
+}
+</style>  
+</head>  
+<body>  
+  
+<div class="button-container">  
+    <!-- 按钮将通过JavaScript动态添加 -->  
+</div>  
+<button id="showMore">显示更多</button>  
+  
+<script>
+// script.js  
+document.addEventListener('DOMContentLoaded', function() {  
+    const container = document.querySelector('.button-container');  
+    const showMoreBtn = document.getElementById('showMore');  
+    let hiddenCount = 0; // 记录隐藏的按钮数量  
+  
+    // 假设我们动态添加100个按钮  
+    for (let i = 1; i <= 100; i++) {  
+        const button = document.createElement('button');  
+        button.textContent = `Button ${i}`;  
+        if (i > 10) { // 假设我们只在一开始显示前10个按钮  
+            button.classList.add('hidden');  
+            hiddenCount++;  
+        }  
+        container.appendChild(button);  
+    }  
+  
+    showMoreBtn.addEventListener('click', function() {  
+        const buttons = document.querySelectorAll('.button-container button.hidden');  
+        for (let i = 0; i < Math.min(buttons.length, 10); i++) { // 每次点击显示最多10个隐藏的按钮  
+            buttons[i].classList.remove('hidden');  
+        }  
+        hiddenCount -= 10;  
+        if (hiddenCount <= 0) {  
+            this.style.display = 'none'; // 如果没有更多隐藏的按钮，则隐藏“显示更多”按钮  
+        }  
+    });  
+});
+
+</script>  
+</body>  
+</html>

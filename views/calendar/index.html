@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>My Evo Calendar</title>
+		<link rel="stylesheet" type="text/css" href="calendar/evo-calendar.css"/>
+		<link rel="stylesheet" type="text/css" href="calendar/evo-calendar.orange-coral.css"/>
+		<link rel="stylesheet" type="text/css" href="calendar/evo-calendar.midnight-blue.css"/>
+		<link rel="stylesheet" type="text/css" href="calendar/evo-calendar.royal-navy.css"/>
+		<link rel="stylesheet" type="text/css" href="calendar/evo-calendar.lime-green.css"/>
+        <!-- Add jQuery library (required) -->
+		<script src="calendar/jquery.min.js"></script>
+		<!-- Add the evo-calendar.js for.. obviously, functionality! -->
+		<script src="calendar/evo-calendar-custom.js"></script>
+
+    </head>
+    <body>
+
+        <div id="calendar"></div>
+
+        <script>
+            const eventData = [
+                        {
+                            id: 'bHay68s', // Event's ID (required)
+                            name: "Test Data", // Event name (required)
+                            badge: "Test Badge", // Event badge (optional)
+                            date: "September/1/2024", // Event date (required)
+                            type: "event", // Event type (required) event, holiday, birthday,...others
+                            everyYear: true, // Same event every year (optional)
+                            color: "#63d867", // Event custom color (optional)
+                            bgColor: '#ffe498',    // day custom backgroud color (optional)
+                            footer:'NetDispatchBalance: 416,000/800,000',
+                        },
+                        {
+                            id: 'vfdbafd',
+                            name: "Test Data2",
+                            date: "September/12/2024",
+                            type: "bsrthsrtht",
+                            everyYear: true,
+                            color: "#FF7321",
+                            footer:'NetDispatchBalance: 416,000/800,000',
+                        },
+                        {
+                            id: 'cargbdb',
+                            name: "Test Data3",
+                            badge: "02/12 - 02/16",
+                            date: ["September/12/2024", "September/16/2024"],
+                            description: "Test Data3 for 4 days.",
+                            type: "event",
+                            color: "#63d867",
+                            bgColor: '#ffe498',
+                        }
+                    ]
+            // initialize your calendar, once the page's DOM is ready
+            $(document).ready(function() {
+                //refer: https://github.com/edlynvillegas/evo-calendar/tree/master?tab=readme-ov-file
+                $("#calendar").evoCalendar({
+                    theme:'Lime Green',   //Default, Midnight Blue, Orange Coral, Royal Navy, Lime Green
+                    language:'cn',    //en, es, de, pt, fr, nl
+                    todayHighlight:true,
+                    sidebarDisplayDefault:false,
+                    sidebarToggler:false,
+                    eventDisplayDefault:true,
+                    eventListToggler:true,
+                    switchTitleDisplayDefault:true,
+                    calendarEvents: eventData
+                });
+            })
+        </script>
+    </body>
+</html>

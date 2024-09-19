@@ -1,0 +1,28 @@
+{  
+    "name": "html-test",  
+    "version": "1.0.58",  
+    "description": "A simple Node.js web hosting app",  
+    "main": "index.js",  
+    "scripts": {  
+      "start": "node index.js",  
+      "dev": "nodemon --delay 2.5 --ignore index.js"  
+    },  
+    "engines": {  
+      "node": "^18.18.2"  
+    },  
+    "author": "Spark Xuan",  
+    "license": "ISC",  
+    "dependencies": {  
+      "cors": "^2.8.5",  
+      "ejs": "^3.1.9",  
+      "express": "^4.18.2",  
+      "express-partials": "^0.3.0",  
+      "moment": "^2.30.1" 
+    },  
+    "devDependencies": {  
+      "browserify": "^17.0.0",  
+      "esmify": "^2.1.1",  
+      "nodemon": "^2.0.22",  
+      "uglify-js": "^3.17.4"  
+    }  
+  }
