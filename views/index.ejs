@@ -12,6 +12,7 @@
       <tr>
         <th>Component</th>
         <th>Description</th>
+        <th>Reference Link</th>
         <th>Demo</th>
       </tr>
     </thead>
@@ -20,6 +21,7 @@
         <tr>
           <td><%= component.title %></td>
           <td><%= component.description %></td>
+          <td><a href="<%= component.referLink %>"><%= component.referLink %></a></td>
           <td><a href="demo/<%= component.name %>">View Demo</a></td>
         </tr>
       <% }); %>
