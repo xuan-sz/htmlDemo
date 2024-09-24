@@ -6,7 +6,7 @@ const app = express()
 
 const componentsData = fs.readFileSync('components.json');
 const components = JSON.parse(componentsData);
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 const hostname = '0.0.0.0';
 
 app.use(function(err, req, res, next) {

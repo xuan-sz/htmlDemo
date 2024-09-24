@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Transfer Demo</title>
+
+	<link href="transfer/css/bootstrap.css" rel="stylesheet">
+	<link href="transfer/css/bootstrap-transfer.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+	
+	<div  style="width:100%"><h1>Bootstrap Transfer Multiselect Demo</h1></div>
+	<br/>
+	<br/>
+	<div id="transfer" style="width:100%"></div>
+
+	<script src="transfer/js/jquery.js"></script>
+    <script src="transfer/js/bootstrap-transfer.js"></script>
+    <script>
+		$(function() {
+			var t = $('#transfer').bootstrapTransfer(
+				{'target_id': 'multi-select-input',
+				 'height': '15em',
+				 'hilite_selection': true,
+				 'titles':['Available Function','Selected Function']
+				});
+			
+			const data = [
+				{value:"1", content:"Apple"},
+				{value:"2", content:"Orange"},
+				{value:"3", content:"Banana"},
+				{value:"4", content:"Peach"},
+				{value:"5", content:"Grapes"}
+			]
+			for(let i = 6;i < 100; i++){
+				data.push({value:i, content:generateRandomString(5)})
+			}
+			t.populate(data);
+			t.set_values(["2", "4"]);
+			//console.log(t.get_values());
+		});
+		function generateRandomString(length) {  
+			let result           = '';  
+			const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';  
+			const charactersLength = characters.length;  
+			for ( let i = 0; i < length; i++ ) {  
+			result += characters.charAt(Math.floor(Math.random() * charactersLength));  
+			}  
+			return result;  
+		}
+    </script>
+  </body>
+</html>
+
+
+
+
