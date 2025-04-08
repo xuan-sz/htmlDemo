@@ -16,6 +16,12 @@
         "title": "Transfer",
         "description": "This is bootstrap transfer.",
         "referLink":"https://github.com/spin/bootstrap-transfer"
+    },
+    {
+        "name": "select",
+        "title": "Select",
+        "description": "This is multi Select",
+        "referLink":""
     }
 
 ]

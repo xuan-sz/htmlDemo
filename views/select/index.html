@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Select Dropdown (UMD) - Set and Get Values</title>
+    <style>
+        /* 保持原有的样式不变 */
+        .multi-select-container {
+            width: 300px;
+            position: relative;
+            font-family: Arial, sans-serif;
+            margin-bottom: 20px;
+        }
+        .multi-select-input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            min-height: 20px;
+        }
+        .multi-select-dropdown {
+            display: none;
+            position: absolute;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            background-color: white;
+            z-index: 1000;
+            scrollbar-width: thin;
+            scrollbar-color: #888 #f1f1f1;
+        }
+        .multi-select-dropdown::-webkit-scrollbar {
+            width: 8px;
+        }
+        .multi-select-dropdown::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .multi-select-dropdown::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        .multi-select-dropdown::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        .multi-select-option {
+            padding: 5px;
+            cursor: pointer;
+        }
+        .multi-select-option:hover {
+            background-color: #f0f0f0;
+        }
+        .multi-select-option.selected {
+            background-color: #e0e0e0;
+        }
+        .selected-item {
+            display: inline-block;
+            margin: 2px;
+            padding: 2px 5px;
+            background-color: #e0e0ff;
+            border-radius: 3px;
+        }
+        /* 新增的样式 */
+        .button-container {
+            margin-top: 10px;
+        }
+        button {
+            margin-right: 10px;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .clear-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+        }
+        .clear-icon:hover {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div id="myMultiSelect"></div>
+    <div class="button-container">
+        <button id="setValue">设置值</button>
+        <button id="getValue">获取值</button>
+        <button id="clearValues">清空</button>
+    </div>
+    <div id="result"></div>
+
+    <script src="select/jquery.min.js"></script>
+    <script src="select/multi-select.js"></script>
+    <script>
+        $(document).ready(function() {
+            var $multiSelect = $('#myMultiSelect').multiSelect({
+                options: ['g16', 'h17', 'i18', 'j19', 'k20', 'l21', 'm22', 'n23']
+            });
+
+            $multiSelect.data('multiSelect').addClearIcon();
+
+            $('#setValue').on('click', function() {
+                $multiSelect.data('multiSelect').setValues(['h17', 'k20', 'm22']);
+                $('#result').text('值已设置为: h17, k20, m22');
+            });
+
+            $('#getValue').on('click', function() {
+                var values = $multiSelect.data('multiSelect').getValues();
+                $('#result').text('当前选中的值: ' + values.join(', '));
+            });
+
+            $('#clearValues').on('click', function() {
+                $multiSelect.data('multiSelect').clearValues();
+                $('#result').text('所有值已清空');
+            });
+        });
+    </script>
+</body>
+</html>

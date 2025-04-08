@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/breathy', 'index.html')); // 注意：这实际上并不是必需的，除非你有特殊需求  
 });  
 
-app.get('/demo', function(req, res) {
+app.get('/demo/', function(req, res) {
   res.render('index', {components});
 });
 
