@@ -22,6 +22,12 @@
         "title": "Select",
         "description": "This is multi Select",
         "referLink":""
+    },
+    {
+        "name": "snake_game",
+        "title": "Snake Game",
+        "description": "snake game",
+        "referLink":""
     }
 
 ]
