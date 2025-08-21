@@ -903,7 +903,7 @@
 
         function setDayBackgroudColor (date){
             thisDate = _.$elements.innerEl.find('[data-date-val="'+date+'"]');
-            if(event_bg_color && thisDate){
+            if(event_bg_color && thisDate && thisDate[0]){
                 thisDate[0].style.backgroundColor = event_bg_color;            
             }
         }
