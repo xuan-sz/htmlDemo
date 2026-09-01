@@ -8,15 +8,29 @@
 		<link rel="stylesheet" type="text/css" href="calendar/evo-calendar.midnight-blue.css"/>
 		<link rel="stylesheet" type="text/css" href="calendar/evo-calendar.royal-navy.css"/>
 		<link rel="stylesheet" type="text/css" href="calendar/evo-calendar.lime-green.css"/>
+		<link rel="stylesheet" type="text/css" href="calendar/evo-calendar.custom-mcs.css"/>
         <!-- Add jQuery library (required) -->
 		<script src="calendar/jquery.min.js"></script>
 		<!-- Add the evo-calendar.js for.. obviously, functionality! -->
 		<script src="calendar/evo-calendar-custom.js"></script>
-
+        <style>
+            #demoCalendar{
+                position: relative;
+                width: 60vw;
+                padding: 26px 10px 10px 10px;
+                background-color: #fff;
+                border-radius: 8px;
+                margin: 10px auto 30px auto;
+                -webkit-box-shadow: 0 10px 20px -5px rgba(19, 31, 51, .65);
+                box-shadow: 0 10px 20px -5px rgba(19, 31, 51, .65);
+            }
+        </style>
     </head>
     <body>
+        <div id="demoCalendar">
 
-        <div id="calendar"></div>
+            <div id="calendar" style="width: 100%;"></div>
+        </div>
 
         <script>
             const eventData = [
@@ -24,7 +38,7 @@
                             id: 'bHay68s', // Event's ID (required)
                             name: "Test Data", // Event name (required)
                             badge: "Test Badge", // Event badge (optional)
-                            date: "September/1/2024", // Event date (required)
+                            date: "August/1/2025", // Event date (required)
                             type: "event", // Event type (required) event, holiday, birthday,...others
                             everyYear: true, // Same event every year (optional)
                             color: "#63d867", // Event custom color (optional)
@@ -34,7 +48,7 @@
                         {
                             id: 'vfdbafd',
                             name: "Test Data2",
-                            date: "September/12/2024",
+                            date: "August/12/2025",
                             type: "bsrthsrtht",
                             everyYear: true,
                             color: "#FF7321",
@@ -43,8 +57,8 @@
                         {
                             id: 'cargbdb',
                             name: "Test Data3",
-                            badge: "02/12 - 02/16",
-                            date: ["September/12/2024", "September/16/2024"],
+                            badge: "08/12 - 08/16",
+                            date: ["August/12/2025", "August/16/2024"],
                             description: "Test Data3 for 4 days.",
                             type: "event",
                             color: "#63d867",
@@ -55,11 +69,11 @@
             $(document).ready(function() {
                 //refer: https://github.com/edlynvillegas/evo-calendar/tree/master?tab=readme-ov-file
                 $("#calendar").evoCalendar({
-                    theme:'Lime Green',   //Default, Midnight Blue, Orange Coral, Royal Navy, Lime Green
+                    theme:'Custom Mcs',   //Default, Midnight Blue, Orange Coral, Royal Navy, Lime Green
                     language:'cn',    //en, es, de, pt, fr, nl
                     todayHighlight:true,
-                    sidebarDisplayDefault:true, // left sidebar controller
-                    sidebarToggler:true,
+                    sidebarDisplayDefault:false, // left sidebar controller
+                    sidebarToggler:false,
                     eventDisplayDefault:true,
                     eventListToggler:true,
                     switchTitleDisplayDefault:true,

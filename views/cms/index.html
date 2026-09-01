@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理系统</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        /* 重构顶部导航栏样式，确保占满整行 */
+        .top-navbar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1050;
+            height: 70px;
+        }
+        
+        /* 重构PC模式下的侧边栏样式 */
+        .sidebar {
+            position: fixed;
+            top: 70px; /* 在顶部导航栏下方 */
+            left: 0;
+            height: calc(100vh - 70px);
+            width: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+            z-index: 1040;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transform: translateX(0);
+        }
+        
+        .sidebar.hide {
+            transform: translateX(-100%);
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-header h4 {
+            color: white;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        
+        .sidebar-menu li {
+            margin: 5px 0;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-radius: 0 25px 25px 0;
+            margin-right: 10px;
+        }
+        
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .sidebar-menu i {
+            width: 20px;
+            margin-right: 15px;
+            text-align: center;
+        }
+        
+        /* 重构主内容区域样式 */
+        .main-content {
+            margin-left: 250px; /* PC模式下默认给侧边栏留出空间 */
+            padding-top: 70px; /* 为顶部导航栏留出空间 */
+            transition: all 0.3s ease;
+            min-height: calc(100vh - 70px);
+        }
+        
+        .main-content.sidebar-hidden {
+            margin-left: 0;
+        }
+        
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 18px;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            margin-right: 15px;
+        }
+        
+        .sidebar-toggle:hover {
+            background: #f8f9fa;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .navbar-brand img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        /* 移除移动端水平菜单栏，简化为移动端侧边栏 */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1035;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .content-page {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .content-page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .page-header {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .page-header h2 {
+            color: #333;
+            margin: 0;
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        /* 重构响应式设计，移动端使用悬浮侧边栏 */
+        @media (max-width: 768px) {
+            .sidebar {
+                top: 0;
+                height: 100vh;
+                transform: translateX(-100%);
+                z-index: 1060;
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding-top: 70px;
+            }
+            
+            .top-navbar {
+                padding: 10px 15px;
+            }
+            
+            .content-page {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 简化HTML结构，移除移动端水平菜单 -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h4>管理系统</h4>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="#" class="sidebar-item active" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>仪表盘</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-item" data-page="users">
+                    <i class="fas fa-users"></i>
+                    <span>用户管理</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-item" data-page="products">
+                    <i class="fas fa-box"></i>
+                    <span>产品管理</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-item" data-page="orders">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>订单管理</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-item" data-page="analytics">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>数据分析</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-item" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>系统设置</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="top-navbar">
+        <div class="d-flex align-items-center">
+            <!-- 添加侧边栏切换按钮 -->
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="#" class="navbar-brand">
+                <img src="/placeholder.svg?height=40&width=40" alt="Logo">
+                <span>我的公司</span>
+            </a>
+        </div>
+        <div class="user-info">
+            <img src="/placeholder.svg?height=40&width=40" alt="用户头像" class="user-avatar">
+            <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <span class="me-2">张三</span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>个人资料</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>账户设置</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>退出登录</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 移除移动端水平菜单栏 -->
+
+    <div class="main-content" id="mainContent">
+        <!-- 页面内容将通过AJAX加载 -->
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            function isPCMode() {
+                return $(window).width() > 768;
+            }
+            
+            function loadPage(pageName) {
+                $('#mainContent').html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">加载中...</span></div><p class="mt-3">正在加载页面...</p></div>');
+                
+                $.ajax({
+                    url: 'pages/' + pageName + '.html',
+                    type: 'GET',
+                    success: function(data) {
+                        $('#mainContent').html(data);
+                        initPageFeatures(pageName);
+                    },
+                    error: function(xhr, status, error) {
+                        $('#mainContent').html(
+                            '<div class="content-page active">' +
+                            '<div class="page-header">' +
+                            '<h2><i class="fas fa-exclamation-triangle me-2 text-warning"></i>页面加载失败</h2>' +
+                            '</div>' +
+                            '<div class="stats-card text-center">' +
+                            '<i class="fas fa-exclamation-circle fa-3x text-danger mb-3"></i>' +
+                            '<h5>无法加载页面内容</h5>' +
+                            '<p class="text-muted">页面文件 "' + pageName + '.html" 不存在或加载失败</p>' +
+                            '<button class="btn btn-primary" onclick="loadPage(\'dashboard\')">返回仪表盘</button>' +
+                            '</div>' +
+                            '</div>'
+                        );
+                    }
+                });
+            }
+            
+            function initPageFeatures(pageName) {
+                if (pageName === 'dashboard') {
+                    setTimeout(function() {
+                        $('.stats-number').each(function() {
+                            var $this = $(this);
+                            var countTo = $this.text().replace(/[^\d]/g, '');
+                            if (countTo) {
+                                $({ countNum: 0 }).animate({
+                                    countNum: countTo
+                                }, {
+                                    duration: 2000,
+                                    easing: 'linear',
+                                    step: function() {
+                                        var prefix = $this.text().match(/[^\d]+/);
+                                        $this.text((prefix ? prefix[0] : '') + Math.floor(this.countNum).toLocaleString());
+                                    },
+                                    complete: function() {
+                                        var prefix = $this.text().match(/[^\d]+/);
+                                        $this.text((prefix ? prefix[0] : '') + parseInt(countTo).toLocaleString());
+                                    }
+                                });
+                            }
+                        });
+                    }, 500);
+                }
+                
+                $('.stats-card').hover(
+                    function() {
+                        $(this).addClass('shadow-lg');
+                    },
+                    function() {
+                        $(this).removeClass('shadow-lg');
+                    }
+                );
+            }
+            
+            $('#sidebarToggle').click(function() {
+                if (isPCMode()) {
+                    $('#sidebar').toggleClass('hide');
+                    $('#mainContent').toggleClass('sidebar-hidden');
+                } else {
+                    $('#sidebar').toggleClass('show');
+                    $('#sidebarOverlay').toggleClass('show');
+                }
+            });
+            
+            $('#sidebarOverlay').click(function() {
+                $('#sidebar').removeClass('show');
+                $('#sidebarOverlay').removeClass('show');
+            });
+            
+            $('.sidebar-item').click(function(e) {
+                e.preventDefault();
+                var targetPage = $(this).data('page');
+                
+                $('.sidebar-item').removeClass('active');
+                $(this).addClass('active');
+                
+                loadPage(targetPage);
+                
+                if (!isPCMode()) {
+                    $('#sidebar').removeClass('show');
+                    $('#sidebarOverlay').removeClass('show');
+                }
+            });
+
+
+            $(window).resize(function() {
+                if (isPCMode()) {
+                    $('#sidebarOverlay').removeClass('show');
+                    $('#sidebar').removeClass('show');
+                } else {
+                    $('#sidebar').removeClass('hide');
+                    $('#mainContent').removeClass('sidebar-hidden');
+                }
+            });
+
+            loadPage('dashboard');
+        });
+    </script>
+</body>
+</html>
